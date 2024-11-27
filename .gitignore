@@ -1,0 +1,6 @@
+# Global
+_build/
+.DS_Store
+
+# Lab: Object-Detection
+object-detection/sample.jpg
