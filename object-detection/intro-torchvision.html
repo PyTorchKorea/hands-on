@@ -1,0 +1,608 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>📚 PyTorch와 torchvision &#8212; PyTorch Hands-On Labs</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-5Z3BGEWMY9"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-5Z3BGEWMY9');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-5Z3BGEWMY9');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'object-detection/intro-torchvision';</script>
+    <link rel="canonical" href="https://hands-on.pytorch.kr/object-detection/intro-torchvision.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="⌨️ torchvision 기초" href="torchvision-basic.html" />
+    <link rel="prev" title="📚 객체 탐지 소개" href="intro-object-detection.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo_ko.png" class="logo__image only-light" alt="PyTorch Hands-On Labs - Home"/>
+    <img src="../_static/logo_ko.png" class="logo__image only-dark pst-js-only" alt="PyTorch Hands-On Labs - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    파이토치 핸즈온 랩 소개
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">객체 탐지(Object Detection)</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="intro-object-detection.html">📚 객체 탐지 소개</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">📚 PyTorch와 torchvision</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="torchvision-basic.html">⌨️ torchvision 기초</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="torchvision-basic-preparation.html">이미지 불러오고 표시하기</a></li>
+<li class="toctree-l2"><a class="reference internal" href="torchvision-basic-transforms.html">torchvision을 사용한 이미지 변환</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="pretrained-model-basic.html">⌨️ 사전 학습 모델 활용하기</a></li>
+
+<li class="toctree-l1 has-children"><a class="reference internal" href="rest-api-intro.html">⌨️ REST API 구현하기</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="rest-api-preparation.html">객체 탐지 API 구성</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rest-api-implementation-1.html">개발 환경 구성</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rest-api-implementation-2.html">API 구현: <code class="docutils literal notranslate"><span class="pre">model.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rest-api-implementation-3.html">API 구현: <code class="docutils literal notranslate"><span class="pre">utils.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rest-api-implementation-4.html">API 구현: <code class="docutils literal notranslate"><span class="pre">app.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="rest-api-test.html">API 동작 확인</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="rest-api-visualization.html">⌨️ API 호출 결과 시각화</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rest-api-improvement.html">⌨️ API 모델 개선하기</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/PyTorchKorea/hands-on" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/PyTorchKorea/hands-on/edit/master/blob/master/labs/object-detection/intro-torchvision.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/PyTorchKorea/hands-on/issues/new?title=Issue%20on%20page%20%2Fobject-detection/intro-torchvision.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/object-detection/intro-torchvision.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>📚 PyTorch와 torchvision</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorch">PyTorch 소개</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#torchvision">torchvision 소개</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="pytorch-torchvision">
+<h1>📚 PyTorch와 torchvision<a class="headerlink" href="#pytorch-torchvision" title="Link to this heading">#</a></h1>
+<section id="pytorch">
+<h2>PyTorch 소개<a class="headerlink" href="#pytorch" title="Link to this heading">#</a></h2>
+<p>PyTorch는 Python에 익숙한 분들이 쉽게 사용하실 수 있는 인공지능 프레임워크로, 직관적이고 유연하게 동작하도록 설계된 것이 특징입니다. 다른 딥러닝 프레임워크로는 Tensorflow나 Jax, MXNet 등이 있지만, PyTorch를 익혀야 하는 가장 큰 이유는 “PyTorch가 많이 사용되기 때문”입니다.</p>
+<p>PapersWithCode 통계에 따르면, 최근 몇 년간의 연구 논문과 오픈소스 저장소에서 사용된 딥러닝 프레임워크의 50% 이상이 PyTorch를 기반으로 합니다. 즉, PyTorch로 모델을 직접 만들고 학습하지 않더라도, 다양한 사전 학습 모델들을 활용하기 위해서는 PyTorch를 익히는 것이 필요합니다.</p>
+<p>PyTorch에 대한 더 자세한 소개는 PyTorch 공식 사이트와 파이토치 한국 사용자 모임 등을 확인해주세요:</p>
+<ul class="simple">
+<li><p>PyTorch 공식 사이트: <a class="reference external" href="https://pytorch.org">https://pytorch.org</a></p></li>
+<li><p>PyTorch 공식 튜토리얼: <a class="reference external" href="https://pytorch.org/tutorials">https://pytorch.org/tutorials</a></p></li>
+<li><p>파이토치 한국 사용자 모임: <a class="reference external" href="https://pytorch.kr">https://pytorch.kr</a></p></li>
+<li><p>파이토치 한국어 튜토리얼: <a class="reference external" href="https://tutorials.pytorch.kr">https://tutorials.pytorch.kr</a></p></li>
+</ul>
+<p><br />
+PyTorch는 다양한 분야(Domain)에서 활용할 수 있는 특화 라이브러리들도 제공합니다. 이 라이브러리들은 특정 데이터 유형이나 문제 도메인에 초점을 맞추고 있으며, 주요 라이브러리는 다음과 같습니다:</p>
+<ul class="simple">
+<li><p>torchvision: 이미지 처리와 컴퓨터 비전</p></li>
+<li><p>torchtext: 텍스트 데이터와 자연어 처리(NLP)</p></li>
+<li><p>torchaudio: 오디오 데이터와 신호 처리</p></li>
+</ul>
+<p>이 중 이미지 처리와 컴퓨터 비전 모델을 쉽게 활용할 수 있도록 도와주는 torchvision에 대해서 더 알아보겠습니다.</p>
+</section>
+<section id="torchvision">
+<h2>torchvision 소개<a class="headerlink" href="#torchvision" title="Link to this heading">#</a></h2>
+<p>torchvision은 PyTorch의 도메인 라이브러리 중 하나로, 이미지 처리 및 컴퓨터 비전 작업을 쉽게 수행할 수 있도록 지원합니다. 이 라이브러리는 다음과 같은 주요 기능을 제공합니다:</p>
+<ul class="simple">
+<li><p>데이터셋 관리: 유명한 공개 데이터셋의 다운로드 및 로드</p></li>
+<li><p>사전 학습된 모델: 컴퓨터 비전에서 자주 사용되는 딥러닝 모델 제공</p></li>
+<li><p>데이터 전처리 및 변환: 이미지 증강과 전처리 파이프라인 구축</p></li>
+<li><p>컴퓨터 비전 연산: NMS, RoI Align 등 컴퓨터 비전 특화 연산 지원</p></li>
+</ul>
+<p>이러한 기능을 제공하기 위해 torchvision는 다양한 모듈들로 구성되어 있습니다. 주요 모듈 및 역할은 다음과 같습니다:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>모듈</p></th>
+<th class="head text-left"><p>역할</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">torchvision.datasets</span></code></p></td>
+<td class="text-left"><p>다양한 이미지 및 비디오 데이터셋을 제공하는 모듈로, 간편하게 데이터셋을 로드하고 사용할 수 있습니다. 유명한 데이터셋인 CIFAR, MNIST, ImageNet 등이 포함됩니다.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">torchvision.io</span></code></p></td>
+<td class="text-left"><p>이미지와 비디오 데이터를 읽고 쓰는 입출력 기능을 제공하는 모듈입니다. 데이터를 텐서로 변환하여 모델 학습에 사용하기 쉽게 해줍니다.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">torchvision.models</span></code></p></td>
+<td class="text-left"><p>미리 학습된 다양한 딥러닝 모델 아키텍처를 제공하는 모듈입니다. ResNet, AlexNet, VGG, EfficientNet 등 여러 CNN 모델을 쉽게 불러와 사용할 수 있습니다.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">torchvision.ops</span></code></p></td>
+<td class="text-left"><p>컴퓨터 비전 작업에 유용한 다양한 연산을 제공하는 모듈입니다. RoI Align, NMS (Non-Maximum Suppression) 등 특정 작업에 최적화된 연산 함수를 포함하고 있습니다.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">torchvision.transforms</span></code></p></td>
+<td class="text-left"><p>이미지 데이터에 대한 전처리와 변환 기능을 제공하는 모듈입니다. 데이터 증강 (augmentation) 및 정규화 등 다양한 변환을 손쉽게 적용할 수 있습니다.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">torchvision.utils</span></code></p></td>
+<td class="text-left"><p>이미지 데이터를 시각화하거나 텐서 데이터를 다루기 위한 다양한 유틸리티 함수를 제공하는 모듈입니다. 예를 들어, <code class="docutils literal notranslate"><span class="pre">make_grid</span></code> 함수는 여러 이미지를 격자 형태로 묶어 보여줄 수 있습니다.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./object-detection"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="intro-object-detection.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">📚 객체 탐지 소개</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="torchvision-basic.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">⌨️ torchvision 기초</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorch">PyTorch 소개</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#torchvision">torchvision 소개</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By 파이토치 한국 사용자 모임
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
