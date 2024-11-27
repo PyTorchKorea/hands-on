@@ -1,0 +1,26 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: index
+parts:
+  # 객체 탐지 랩
+  - caption: 객체 탐지(Object Detection)
+    chapters:
+      - file: object-detection/intro-object-detection
+      - file: object-detection/intro-torchvision
+      - file: object-detection/torchvision-basic
+        sections:
+        - file: object-detection/torchvision-basic-preparation
+        - file: object-detection/torchvision-basic-transforms
+      - file: object-detection/pretrained-model-basic
+      - file: object-detection/rest-api-intro
+        sections:
+        - file: object-detection/rest-api-preparation
+        - file: object-detection/rest-api-implementation-1
+        - file: object-detection/rest-api-implementation-2
+        - file: object-detection/rest-api-implementation-3
+        - file: object-detection/rest-api-implementation-4
+        - file: object-detection/rest-api-test
+      - file: object-detection/rest-api-visualization
+      - file: object-detection/rest-api-improvement

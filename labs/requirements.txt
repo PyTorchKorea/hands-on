@@ -1,0 +1,11 @@
+# JupyterBook
+jupyter-book
+
+# Dependencies: PyTorch common
+torch
+torchvision
+
+# Lab: Object-Detection
+requests
+matplotlib
+pillow
